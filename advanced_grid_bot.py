@@ -161,3 +161,17 @@ if __name__ == "__main__":
     API_SECRET = ""
     bot = AdvancedGridBot(API_KEY, API_SECRET, demo_mode=True)
     bot.run()
+        total_trades = len(self.trade_history)
+        total_buys = sum(1 for t in self.trade_history if "BUY" in t)
+        total_sells = sum(1 for t in self.trade_history if "SELL" in t)
+        avg_buy_price = (
+            sum(float(t.split("at")[1]) for t in self.trade_history if "BUY" in t) / total_buys
+            if total_buys > 0 else 0
+        )
+        roi = ((self.balance - 1_000_000) / 1_000_000) * 100 if self.demo_mode else 0
+
+        print(f"\nPerformance Summary:")
+        print(f"Total Trades: {total_trades}")
+        print(f"Buys: {total_buys}, Sells: {total_sells}")
+        print(f"Average Buy Price: {avg_buy_price:.2f}")
+        print(f"Return on Investment (ROI): {roi:.2f}%")
