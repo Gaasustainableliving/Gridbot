@@ -1,4 +1,4 @@
-import time
+yimport time
 import hmac
 import hashlib
 import requests
@@ -175,3 +175,25 @@ if __name__ == "__main__":
         print(f"Buys: {total_buys}, Sells: {total_sells}")
         print(f"Average Buy Price: {avg_buy_price:.2f}")
         print(f"Return on Investment (ROI): {roi:.2f}%")
+if __name__ == "__main__":
+    # Replace with your Kraken API keys or keep demo_mode=True to test without keys
+    API_KEY = ""
+    API_SECRET = ""
+    bot = AdvancedGridBot(API_KEY, API_SECRET, demo_mode=True)
+    bot.run()
+
+    # Moved these lines back to column 0
+    total_trades = len(bot.trade_history)
+    total_buys = sum(1 for t in bot.trade_history if "BUY" in t)
+    total_sells = sum(1 for t in bot.trade_history if "SELL" in t)
+    avg_buy_price = (
+        sum(float(t.split("at")[1]) for t in bot.trade_history if "BUY" in t) / total_buys
+        if total_buys > 0 else 0
+    )
+    roi = ((bot.balance - 1_000_000) / 1_000_000) * 100 if bot.demo_mode else 0
+
+    print(f"\nPerformance Summary:")
+    print(f"Total Trades: {total_trades}")
+    print(f"Buys: {total_buys}, Sells: {total_sells}")
+    print(f"Average Buy Price: {avg_buy_price:.2f}")
+    print(f"Return on Investment (ROI): {roi:.2f}%")
